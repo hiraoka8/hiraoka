@@ -1,2 +1,38 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# include <Siv3D.hpp>
+
+void Main()
+{
+	// 絵文字からテクスチャを作成する | Create a texture from an emoji
+	const Texture emoji{ U"🦖"_emoji }; 
+
+	// プレイヤーの移動スピード | Player's movement speed
+	double speed = 200.0;
+
+	// プレイヤーの X 座標 | Player's X position
+	double playerPosX = 400;
+
+	// プレイヤーが右を向いているか | Whether player is facing right
+	bool isPlayerFacingRight = true;
+
+	while (System::Update())
+	{
+		// 左キーが押されていたら | If left key is pressed
+		if (KeyLeft.pressed()) 
+		{
+			// プレイヤーが左に移動する | Player moves left
+			playerPosX = Max((playerPosX - speed * Scene::DeltaTime()), 60.0);
+			isPlayerFacingRight = false;
+		}
+
+		// 右キーが押されていたら | If right key is pressed
+		if (KeyRight.pressed()) 
+		{
+			// プレイヤーが右に移動する | Player moves right
+			playerPosX = Min((playerPosX + speed * Scene::DeltaTime()), 740.0);
+			isPlayerFacingRight = true;
+		}
+
+		// プレイヤーを描く | Draw the player
+		emoji.scaled(0.75).mirrored(isPlayerFacingRight).drawAt(playerPosX, 540); 
+	}
+}
